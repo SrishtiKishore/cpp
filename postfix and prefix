@@ -1,0 +1,91 @@
+#include <iostream>
+#include<stack>
+using namespace std;
+
+/* give precedence to operators*/
+int  prec(char c){
+
+if(c=='/')
+    return 4;
+if(c=='*')
+    return 3;
+if(c=='+'||c=='-')
+    return 1;
+
+}
+/* postfix func*/
+string post(string s){
+
+   stack<char> stk;
+    cout<<"post"<<endl;
+    string ans="";
+    for(int i=0;i<s.length();i++){
+
+
+        if(isalnum(s[i])){
+            ans.push_back(s[i]);
+
+        }
+        else{
+            if(!stk.empty()){
+            if(prec(s[i])<prec(stk.top())){
+               while(prec(s[i])<prec(stk.top())){
+                      ans.push_back(stk.top());
+                     stk.pop();
+                     }
+
+               }
+
+
+            }
+
+                stk.push(s[i]);
+
+        }
+    }
+    while(!stk.empty()){
+        char x=stk.top();
+        stk.pop();
+        ans+=x;
+
+    }
+
+
+
+    return ans;
+
+
+
+}
+/* prefix function*/
+
+void pre(string s){
+
+/*reverse original string*/
+ for(int i=0,j=s.length()-1;i!=j;i++,j--){
+   char x=s[i];
+   s[i]=s[j];
+   s[j]=x;
+ }
+  string s1=post(s);
+
+/*reverse string obtained from postfix */
+  for(int i=0,j=s1.length()-1;i!=j;i++,j--){
+   char x=s1[i];
+   s1[i]=s1[j];
+   s1[j]=x;
+ }
+    cout<<s1<<endl;
+}
+
+
+int main()
+{
+    cout << "string" << endl;
+    string s;
+    cin>>s;
+    string s1=post(s);
+    cout<<s1<<endl;
+    pre(s);
+    return 0;
+}
